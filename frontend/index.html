@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Autos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Gestión de Autos</h1>
+
+  <form id="form-carro">
+    <input type="text" id="marca" placeholder="Marca" required>
+    <input type="text" id="modelo" placeholder="Modelo" required>
+    <input type="number" id="año" placeholder="Año" required>
+    <input type="file" id="foto" accept="image/*" required>
+    <button type="submit">Agregar auto</button>
+  </form>
+
+  <section id="lista-carros"></section>
+
+  <script src="app.js"></script>
+</body>
+</html>

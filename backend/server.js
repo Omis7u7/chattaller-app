@@ -3,25 +3,31 @@ import multer from "multer";
 import cors from "cors";
 import fs from "fs";
 import path from "path";
+import carrosRoutes from "./routes/carros.js";
 
 const app = express();
 const port = 3001;
 
 app.use(cors());
 app.use(express.json());
-app.use("/uploads", express.static("uploads"));
+app.use("/api/carros", carrosRoutes);
 
 const autosFile = "autos.json";
 
 const storage = multer.diskStorage({
-  destination: "upload",
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
   filename: (req, file, cb) => {
-    const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname);
-    cb(null, `${unique}${ext}`);
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
 const upload = multer({ storage });
+app.post("/upload", upload.single("archivo"), (req, res) => {
+  res.json({ url: `/uploads/${req.file.filename}` });
+});
+
+app.use("/uploads", express.static("uploads"));
 
 const leerAutos = () => JSON.parse(fs.readFileSync(autosFile, "utf-8") || "[]");
 const guardarAutos = (data) => fs.writeFileSync(autosFile, JSON.stringify(data, null, 2));
